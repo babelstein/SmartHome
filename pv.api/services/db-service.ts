@@ -1,5 +1,6 @@
 import { QueryTypes, Sequelize } from "sequelize";
 import { PostPvCharge } from "../api-models/contracts/post-pv-charge";
+import { BatChargeDTO } from "../models/bat-charge";
 import { PvChargeDTO } from "../models/pv-charge";
 
 export class DBService {
@@ -30,6 +31,7 @@ export class DBService {
   private async syncModels(): Promise<void> {
     console.info("Models syncronization");
     await PvChargeDTO.sync({ force: true });
+    await BatChargeDTO.sync({ force: true });
     await this.sequelize.sync({ force: true });
   }
 
