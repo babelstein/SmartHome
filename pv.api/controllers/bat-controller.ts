@@ -13,14 +13,14 @@ export class BatController {
   }
 
   public init(app: Express): void {
-    app.get(this.basePath + '/bat/entry/:id', async (req: Request, res: Response) => {
+    app.get(this.basePath + '/bat/:id', async (req: Request, res: Response) => {
       const id = req.params.id as string;
       const entry = await this.dbSvc.getBatEntry(+id);
 
       res.status(200).send(entry);
     });
 
-    app.post(this.basePath + '/bat/entry', async (req: Request<PostBatCharge>, res: Response<BatChargeEntry | null | { errorMessage: string }>) => {
+    app.post(this.basePath + '/bat', async (req: Request<PostBatCharge>, res: Response<BatChargeEntry | null | { errorMessage: string }>) => {
       const error = modelValidator(req.body, [
         { name: 'voltage', type: 'number' },
         { name: 'current', type: 'number' },

@@ -13,14 +13,14 @@ export class PvController {
   }
 
   public init(app: Express): void {
-    app.get(this.basePath + '/pv/entry/:id', async (req: Request, res: Response<PvChargeEntry | null>) => {
+    app.get(this.basePath + '/pv/:id', async (req: Request, res: Response<PvChargeEntry | null>) => {
       const id = req.params.id as string;
       const entry = await this.dbSvc.getPvEntry(+id);
 
       res.status(200).send(entry as PvChargeEntry | null);
     });
 
-    app.post(this.basePath + '/pv/entry', async (req: Request<PostPvCharge>, res: Response<PvChargeEntry | null | { errorMessage: string }>) => {
+    app.post(this.basePath + '/pv', async (req: Request<PostPvCharge>, res: Response<PvChargeEntry | null | { errorMessage: string }>) => {
       const error = modelValidator(req.body, [
         { name: 'voltage', type: 'number' },
         { name: 'current', type: 'number' },
