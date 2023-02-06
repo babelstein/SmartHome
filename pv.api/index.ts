@@ -1,13 +1,15 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
-import { DBServiceOldSQL } from './services/db-service-oldsql';
+
 import { BatController, PvController } from './controllers';
+import { DBServiceMySQL } from './services/db-service-mysql';
 
 dotenv.config();
 
 const app: Express = express();
 const PORT = process.env.PORT;
-const dbSvc = new DBServiceOldSQL();
+const dbSvc = new DBServiceMySQL();
+dbSvc.init().then(_ => {});
 
 app.listen(
   PORT,

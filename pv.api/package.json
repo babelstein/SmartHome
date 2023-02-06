@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "npx tsc",
+    "postbuild": "cp package*.json dist && cd dist && npm ci --production",
     "start": "node dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
   },
@@ -12,18 +13,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/mysql": "^2.15.21",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "mysql2": "^3.0.1",
-    "sequelize": "^6.28.0",
-    "sqlite3": "^5.1.4"
+    "mysql": "^2.18.1",
+    "promise-mysql": "^5.2.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.15",
     "@types/node": "^18.11.18",
     "concurrently": "^7.6.0",
     "nodemon": "^2.0.20",
-    "sequelize-cli": "^6.5.2",
     "typescript": "^4.9.4"
   }
 }
