@@ -7,6 +7,7 @@ import { modelValidator } from './model-validator';
 export class PvController {
   private dbSvc: DBServiceMySQL;
   private basePath: string = process.env.BASE_PATH as string;
+  private secret: string = process.env.SECRET as string;
 
   constructor(dbService: DBServiceMySQL) {
     this.dbSvc = dbService;
@@ -21,6 +22,10 @@ export class PvController {
     });
 
     app.post(this.basePath + '/pv', async (req: Request<PostPvCharge>, res: Response<PvChargeEntry | null | { errorMessage: string }>) => {
+      if (this.secret !== req.headers['authorization']) {
+        res.status(401).send();
+        return;
+      }
       const error = modelValidator(req.body, [
         { name: 'voltage', type: 'number' },
         { name: 'current', type: 'number' },
