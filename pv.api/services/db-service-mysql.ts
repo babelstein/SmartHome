@@ -84,6 +84,38 @@ export class DBServiceMySQL {
     }
   }
 
+  public async getLastPv(): Promise<PvChargeDTO | null> {
+    if (this.connection !== undefined) {
+      const result = await this.connection.query(
+        `SELECT * FROM \`PvCharges\` ORDER BY \`createdAt\` DESC LIMIT 1`
+      );
+      if (result.length > 0) {
+        return result[0];
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  public async getPvTimerange(fromDate: Date): Promise<PvChargeDTO[]> {
+    if (this.connection !== undefined) {
+      const result = await this.connection.query(
+        `SELECT * FROM \`PvCharges\` 
+        WHERE \`createdAt\` > '${fromDate.toISOString().slice(0, 19).replace('T', ' ')}' 
+        ORDER BY \`createdAt\` ASC `
+      );
+      if (result.length > 0) {
+        return result;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
   public async saveBatEntry(batChargeEntry: PostBatCharge): Promise<BatChargeDTO | null> {
     if (this.connection !== undefined) {
       const result = await this.connection.query(
@@ -113,6 +145,38 @@ export class DBServiceMySQL {
       }
     } else {
       return null;
+    }
+  }
+
+  public async getLastBatery(): Promise<BatChargeDTO | null> {
+    if (this.connection !== undefined) {
+      const result = await this.connection.query(
+        `SELECT * FROM \`BatCharges\` ORDER BY \`createdAt\` DESC LIMIT 1`
+      );
+      if (result.length > 0) {
+        return result[0];
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  public async getBateryTimerange(fromDate: Date): Promise<BatChargeDTO[]> {
+    if (this.connection !== undefined) {
+      const result = await this.connection.query(
+        `SELECT * FROM \`BatCharges\` 
+        WHERE \`createdAt\` > '${fromDate.toISOString().slice(0, 19).replace('T', ' ')}' 
+        ORDER BY \`createdAt\` ASC `
+      );
+      if (result.length > 0) {
+        return result;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
     }
   }
 }

@@ -17,8 +17,11 @@ export class BatController {
     app.get(this.basePath + '/bat/:id', async (req: Request, res: Response) => {
       const id = req.params.id as string;
       const entry = await this.dbSvc.getBatEntry(+id);
-
-      res.status(200).send(entry);
+      if(entry === null){
+        res.status(204).send();
+      } else {
+        res.status(200).send(entry);
+      }
     });
 
     app.post(this.basePath + '/bat', async (req: Request<PostBatCharge>, res: Response<BatChargeEntry | null | { errorMessage: string }>) => {
@@ -36,7 +39,7 @@ export class BatController {
         return;
       } else {
         const result = await this.dbSvc.saveBatEntry(req.body as PostBatCharge);
-        res.status(200).send(result as BatChargeEntry | null);
+        res.status(201).send(result as BatChargeEntry | null);
         return;
       }
     })

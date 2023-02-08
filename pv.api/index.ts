@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 
 import { BatController, PvController } from './controllers';
 import { DBServiceMySQL } from './services/db-service-mysql';
+import { SummaryController } from './controllers/summary-controller';
 
 dotenv.config();
 
@@ -21,3 +22,4 @@ app.use(express.urlencoded({ extended: true }));
 
 new PvController(dbSvc).init(app);
 new BatController(dbSvc).init(app);
+new SummaryController(dbSvc).init(app);
