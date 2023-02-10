@@ -99,11 +99,12 @@ export class DBServiceMySQL {
     }
   }
 
-  public async getPvTimerange(fromDate: Date): Promise<PvChargeDTO[]> {
+  public async getPvTimerange(startDate: Date, endDate: Date): Promise<PvChargeDTO[]> {
     if (this.connection !== undefined) {
       const result = await this.connection.query(
         `SELECT * FROM \`PvCharges\` 
-        WHERE \`createdAt\` > '${fromDate.toISOString().slice(0, 19).replace('T', ' ')}' 
+        WHERE \`createdAt\` > '${startDate.toISOString().slice(0, 19).replace('T', ' ')}' 
+        AND \`createdAt\` < '${endDate.toISOString().slice(0, 19).replace('T', ' ')}' 
         ORDER BY \`createdAt\` ASC `
       );
       if (result.length > 0) {
@@ -163,11 +164,12 @@ export class DBServiceMySQL {
     }
   }
 
-  public async getBateryTimerange(fromDate: Date): Promise<BatChargeDTO[]> {
+  public async getBateryTimerange(startDate: Date, endDate: Date): Promise<BatChargeDTO[]> {
     if (this.connection !== undefined) {
       const result = await this.connection.query(
         `SELECT * FROM \`BatCharges\` 
-        WHERE \`createdAt\` > '${fromDate.toISOString().slice(0, 19).replace('T', ' ')}' 
+        WHERE \`createdAt\` > '${startDate.toISOString().slice(0, 19).replace('T', ' ')}' 
+        AND \`createdAt\` < '${endDate.toISOString().slice(0, 19).replace('T', ' ')}' 
         ORDER BY \`createdAt\` ASC `
       );
       if (result.length > 0) {

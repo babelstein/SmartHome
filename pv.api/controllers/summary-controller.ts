@@ -15,45 +15,54 @@ export class SummaryController {
 
   public init(app: Express): void {
     app.get(this.basePath + '/summary', async (req: Request, res: Response) => {
-      if (req.query.startTime || req.query.startTime) {
-        const startTime = new Date(req.query.startTime as string);
-
-        const bateryEntries = (await this.dbSvc.getBateryTimerange(startTime)).map(a => (
-          {
-            id: a.id,
-            creationTime: a.createdAt,
-            current: a.current,
-            temp: a.temp,
-            voltage: a.voltage
-          } as BatChargeEntry
-        ));
-        const pvEntries = (await this.dbSvc.getPvTimerange(startTime)).map(a => (
-          {
-            id: a.id,
-            creationTime: a.createdAt,
-            current: a.current,
-            voltage: a.voltage,
-            power: a.power
-          } as PvChargeEntry
-        ));
-
-        const result = {
-          battery: bateryEntries,
-          pv: pvEntries
-        } as SummaryTimerange;
-
-        res.status(200).send(result);
+      if (req.query.startDate || req.query.endDate) {
+        await this.getDateRangeSummary(req, res);
       } else {
-        const lastBatery = await this.dbSvc.getLastBatery();
-        const lastPv = await this.dbSvc.getLastPv();
-
-        const result = {
-          lastBatery,
-          lastPv
-        } as Summary;
-
-        res.status(200).send(result);
+        await this.getCurrentSummary(res);
       }
     });
+  }
+
+  private async getCurrentSummary(res: Response<any, Record<string, any>>) {
+    const lastBattery = await this.dbSvc.getLastBatery();
+    const lastPv = await this.dbSvc.getLastPv();
+
+    const result = {
+      batteryInfo: lastBattery,
+      pvInfo: lastPv
+    } as Summary;
+
+    res.status(200).send(result);
+  }
+
+  private async getDateRangeSummary(req: Request, res: Response<any, Record<string, any>>) {
+    const startDate = new Date(req.query.startDate as string);
+    const endDate = new Date(req.query.endDate as string);
+    
+    const batteryEntries = (await this.dbSvc.getBateryTimerange(startDate, endDate)).map(a => (
+      {
+        id: a.id,
+        creationTime: a.createdAt,
+        current: a.current,
+        temp: a.temp,
+        voltage: a.voltage
+      } as BatChargeEntry
+    ));
+    const pvEntries = (await this.dbSvc.getPvTimerange(startDate, endDate)).map(a => (
+      {
+        id: a.id,
+        creationTime: a.createdAt,
+        current: a.current,
+        voltage: a.voltage,
+        power: a.power
+      } as PvChargeEntry
+    ));
+
+    const result = {
+      battery: batteryEntries,
+      pv: pvEntries
+    } as SummaryTimerange;
+
+    res.status(200).send(result);
   }
 }
