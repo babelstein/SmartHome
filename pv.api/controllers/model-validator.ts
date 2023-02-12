@@ -14,6 +14,12 @@ export function modelValidator(body: any, fields: { name: string, type: string }
         }
     });
 
+    const nonZeroValues = fields.reduce((total, arg) => body[arg.name] + arg, 0) > 0;
+    console.log(nonZeroValues);
+    if (!nonZeroValues) {
+        messages += 'at least one field should have value greater than 0';
+    }
+
     if (messages !== '') {
         return { errorMessage: messages };
     }

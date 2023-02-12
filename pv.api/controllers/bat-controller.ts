@@ -35,7 +35,7 @@ export class BatController {
         { name: 'temp', type: 'number' },
       ]);
       if (error !== null) {
-        res.status(418).send(error);
+        res.status(400).send(error);
         return;
       } else {
         const result = await this.dbSvc.saveBatEntry(req.body as PostBatCharge);

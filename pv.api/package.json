@@ -5,9 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "npx tsc",
-    "postbuild": "cp package*.json dist && cd dist && npm ci --production",
-    "start": "node dist/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
+    "start": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
   },
   "keywords": [],
   "author": "",
