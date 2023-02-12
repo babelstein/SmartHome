@@ -1,10 +1,12 @@
+import { OkPacket } from "mysql";
 import mysql, { Connection } from "promise-mysql";
 import { PostBatCharge } from "../api-models/contracts/post-bat-charge";
 import { PostPvCharge } from "../api-models/contracts/post-pv-charge";
 import { BatChargeDTO } from "../models/bat-charge";
 import { PvChargeDTO } from "../models/pv-charge";
+import { DbService } from "./db-service";
 
-export class DBServiceMySQL {
+export class DBServiceMySQL implements DbService {
   private connection?: Connection;
 
   constructor() { }
@@ -58,9 +60,8 @@ export class DBServiceMySQL {
         INSERT INTO \`PvCharges\` (\`voltage\`,\`current\`,\`power\`) 
         VALUES (${pvChargeEntry.voltage},${pvChargeEntry.current},${pvChargeEntry.power})
         `,
-      );
-      console.log(result);
-      return this.getPvEntry(result[0]);
+      ) as OkPacket;
+      return this.getPvEntry(result.insertId);
     } else {
       return null;
     }
@@ -103,8 +104,8 @@ export class DBServiceMySQL {
     if (this.connection !== undefined) {
       const result = await this.connection.query(
         `SELECT * FROM \`PvCharges\` 
-        WHERE \`createdAt\` > '${startDate.toISOString().slice(0, 19).replace('T', ' ')}' 
-        AND \`createdAt\` < '${endDate.toISOString().slice(0, 19).replace('T', ' ')}' 
+        WHERE \`createdAt\` > '${startDate.toLocalISOString().slice(0, 19).replace('T', ' ')}' 
+        AND \`createdAt\` < '${endDate.toLocalISOString().slice(0, 19).replace('T', ' ')}' 
         ORDER BY \`createdAt\` ASC `
       );
       if (result.length > 0) {
@@ -124,8 +125,8 @@ export class DBServiceMySQL {
       INSERT INTO \`BatCharges\` (\`voltage\`,\`current\`,\`temp\`) 
       VALUES (${batChargeEntry.voltage},${batChargeEntry.current},${batChargeEntry.temp})
       `
-      );
-      return this.getBatEntry(result[0]);
+      ) as OkPacket;
+      return this.getBatEntry(result.insertId);
     } else {
       return null;
     }
@@ -168,8 +169,8 @@ export class DBServiceMySQL {
     if (this.connection !== undefined) {
       const result = await this.connection.query(
         `SELECT * FROM \`BatCharges\` 
-        WHERE \`createdAt\` > '${startDate.toISOString().slice(0, 19).replace('T', ' ')}' 
-        AND \`createdAt\` < '${endDate.toISOString().slice(0, 19).replace('T', ' ')}' 
+        WHERE \`createdAt\` > '${startDate.toLocalISOString().slice(0, 19).replace('T', ' ')}' 
+        AND \`createdAt\` < '${endDate.toLocalISOString().slice(0, 19).replace('T', ' ')}' 
         ORDER BY \`createdAt\` ASC `
       );
       if (result.length > 0) {
@@ -179,6 +180,24 @@ export class DBServiceMySQL {
       }
     } else {
       return [];
+    }
+  }
+
+  public async areEntriesOutdated(): Promise<boolean | null> {
+    if (this.connection !== undefined) {
+      const resultBattery = await this.connection.query(
+        `SELECT 1 FROM \`BatCharges\` WHERE \`createdAt\` > DATE_SUB(NOW(), INTERVAL 5 MINUTE) LIMIT 1;`
+      );
+      const resultPv = await this.connection.query(
+        `SELECT 1 FROM \`PvCharges\` WHERE \`createdAt\` > DATE_SUB(NOW(), INTERVAL 5 MINUTE) LIMIT 1;`
+      );
+      if (resultPv.length > 0 || resultBattery.length > 0) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return null;
     }
   }
 }

@@ -2,10 +2,6 @@ export function modelValidator(body: any, fields: { name: string, type: string }
     let messages = '';
 
     fields.forEach(field => {
-        console.log(field);
-        console.log(body[field.name]);
-        console.log(typeof (body[field.name]));
-        console.log(typeof (body[field.name]) != field.type);
         if (body[field.name] === undefined) {
             messages += `${field.name} field missing. `;
         }
@@ -14,8 +10,7 @@ export function modelValidator(body: any, fields: { name: string, type: string }
         }
     });
 
-    const nonZeroValues = fields.reduce((total, arg) => body[arg.name] + arg, 0) > 0;
-    console.log(nonZeroValues);
+    const nonZeroValues = fields.reduce((total, arg) => body[arg.name] + total, 0) > 0;
     if (!nonZeroValues) {
         messages += 'at least one field should have value greater than 0';
     }

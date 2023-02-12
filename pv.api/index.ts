@@ -23,3 +23,14 @@ app.use(express.urlencoded({ extended: true }));
 new PvController(dbSvc).init(app);
 new BatController(dbSvc).init(app);
 new SummaryController(dbSvc).init(app);
+
+declare global {
+  interface Date {
+    toLocalISOString(): string;
+  }
+}
+
+Date.prototype.toLocalISOString = function (): string {
+  var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+  return (new Date(this.getTime() - tzoffset)).toISOString().slice(0, -1);
+}

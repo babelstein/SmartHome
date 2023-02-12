@@ -1,9 +1,11 @@
 import { QueryTypes, Sequelize } from "sequelize";
+import { PostBatCharge } from "../api-models/contracts/post-bat-charge";
 import { PostPvCharge } from "../api-models/contracts/post-pv-charge";
 import { BatChargeDTO } from "../models/bat-charge";
 import { PvChargeDTO } from "../models/pv-charge";
+import { DbService } from "./db-service";
 
-export class DBService {
+export class DBServiceSequelize implements DbService {
   private sequelize: Sequelize;
 
   constructor() {
@@ -17,6 +19,30 @@ export class DBService {
 
     this.testConnection();
     this.syncModels();
+  }
+  init(): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  getLastPv(): Promise<PvChargeDTO | null> {
+    throw new Error("Method not implemented.");
+  }
+  getPvTimerange(startDate: Date, endDate: Date): Promise<PvChargeDTO[]> {
+    throw new Error("Method not implemented.");
+  }
+  saveBatEntry(batChargeEntry: PostBatCharge): Promise<BatChargeDTO | null> {
+    throw new Error("Method not implemented.");
+  }
+  getBatEntry(id: number): Promise<BatChargeDTO | null> {
+    throw new Error("Method not implemented.");
+  }
+  getLastBatery(): Promise<BatChargeDTO | null> {
+    throw new Error("Method not implemented.");
+  }
+  getBateryTimerange(startDate: Date, endDate: Date): Promise<BatChargeDTO[]> {
+    throw new Error("Method not implemented.");
+  }
+  areEntriesOutdated(): Promise<boolean | null> {
+    throw new Error("Method not implemented.");
   }
 
   private async testConnection(): Promise<void> {
