@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "build": "npx tsc",
+    "build": "esbuild index.ts --bundle --minify --platform=node --outfile=dist/index.js",
+    "build:tsc": "npx tsc",
     "start": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
     "test": "jest"
   },
@@ -16,6 +17,7 @@
     "@types/node-cron": "^3.0.7",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
+    "esbuild": "0.17.11",
     "express": "^4.18.2",
     "mysql": "^2.18.1",
     "node-cron": "^3.0.2",
