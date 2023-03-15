@@ -24,7 +24,7 @@ export class BatController {
       }
     });
 
-    app.post(this.basePath + '/bat', async (req: Request<PostBatCharge>, res: Response<BatChargeEntry | null | { errorMessage: string }>) => {
+    app.post(this.basePath + '/bat', async (req: Request<PostBatCharge>, res: Response<BatChargeEntry | null | { errorMessage: string[] }>) => {
       if (this.secret !== req.headers['authorization']) {
         res.status(401).send();
         return;

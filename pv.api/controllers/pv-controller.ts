@@ -21,7 +21,7 @@ export class PvController {
       res.status(200).send(entry as PvChargeEntry | null);
     });
 
-    app.post(this.basePath + '/pv', async (req: Request<PostPvCharge>, res: Response<PvChargeEntry | null | { errorMessage: string }>) => {
+    app.post(this.basePath + '/pv', async (req: Request<PostPvCharge>, res: Response<PvChargeEntry | null | { errorMessage: string[] }>) => {
       if (this.secret !== req.headers['authorization']) {
         res.status(401).send();
         return;
