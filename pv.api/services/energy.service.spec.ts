@@ -20,17 +20,37 @@ for (var i = 0; i < 60; i++) {
   );
 }
 
+function shuffle(array: EnergyItem[]) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
 describe('Energy service tests', () => {
   const energyService = new EnergyService();
 
   test('calculate energy should return 0.5kWh', () => {
-    expect(energyService.calculateEnergy(testData500wh).energy).toBe(0.5);
+    var result = energyService.calculateEnergy(testData500wh);
+    expect(result).toBeTruthy
+    expect(result?.energy).toBe(0.5);
   });
 
   test('should calculate energy when there\'s only one item in collection', () => {
     var result = energyService.calculateEnergy(testDataOneItem);
     expect(result).toBeTruthy();
-    expect(result.energy).toBe(0.05);
+    expect(result?.energy).toBe(0.05);
   });
 
   test('should return null when no empty collection passed', () => {
@@ -41,12 +61,12 @@ describe('Energy service tests', () => {
   test('should calculate properly when collection with gaps passed', () => {
     var result = energyService.calculateEnergy([...testData500wh, ...testData1kWh]);
     expect(result).toBeTruthy();
-    expect(result.energy).toBe(1.5);
+    expect(result?.energy).toBe(1.5);
   });
 
   test('should calculate properly when collection is not ordered', () => {
-    var result = energyService.calculateEnergy([...testData1kWh, ...testData500wh]);
+    var result = energyService.calculateEnergy(shuffle([...testData1kWh, ...testData500wh]));
     expect(result).toBeTruthy();
-    expect(result.energy).toBe(1.5);
+    expect(result?.energy).toBe(1.5);
   });
 });

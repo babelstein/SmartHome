@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "build": "esbuild index.ts --bundle --minify --platform=node --outfile=dist/index.js",
+    "build": "esbuild index.ts --bundle --platform=node --outfile=dist/index.js",
     "build:tsc": "npx tsc",
     "start": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
     "test": "jest"
