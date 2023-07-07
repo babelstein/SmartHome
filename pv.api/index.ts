@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 import { BatController, PvController } from './controllers';
 import { DBServiceMySQL } from './services/db-service-mysql';
@@ -17,6 +18,7 @@ app.listen(
   () => console.log("Smart Home API is alive! (on port " + PORT + ")")
 );
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
