@@ -14,3 +14,4 @@ import { HistoryComponent } from './components/history/history.component';
 })
 export class AppComponent {
   title = 'pv data lookup';
+}
