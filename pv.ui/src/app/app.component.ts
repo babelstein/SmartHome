@@ -13,5 +13,4 @@ import { HistoryComponent } from './components/history/history.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'pvlookup';
-}
+  title = 'pv data lookup';
