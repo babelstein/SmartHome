@@ -33,6 +33,9 @@ const LiveData: React.FC = () => {
         <Gauge label="PV Current" min={0} max={30} value={pvInfo.current} unit="A" segments={PV_CURRENT}/>
         <Gauge label="PV Power" min={0} max={1200} value={pvInfo.power} unit="W" segments={PV_POWER}/>
       </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
+        <span>{'Last update time: ' + batteryInfo.creationTime}</span>
+      </div>
     </>
   );
 };
