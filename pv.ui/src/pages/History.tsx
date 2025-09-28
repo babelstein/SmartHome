@@ -51,11 +51,11 @@ const History: React.FC = () => {
       </div>
       <LineChart
         data={pvData}
-        yLeftLabel="Voltage (V)"
-        yRightLabel="Current (A)"
-        yLeftKey="voltage"
-        yRightKey="current"
-        title="PV Panels Voltage and Current"
+        yLeftLabel="Power (W)"
+        yRightLabel="Voltage (A)"
+        yLeftKey="power"
+        yRightKey="voltage"
+        title="PV Panels Power and Voltage"
       />
     </div>
   );

@@ -117,7 +117,7 @@ const LineChart: React.FC<LineChartProps> = ({
           .append('circle')
           .attr('cx', (d: any) => xScale(d.creationTime))
           .attr('cy', (d: any) => yScale(d[key] as number))
-          .attr('r', 4)
+          .attr('r', 2)
           .attr('fill', key === yLeftKey ? 'steelblue' : 'orange')
           .on('mouseover', (event, d: any) => {
             tooltip.style('display', 'block')

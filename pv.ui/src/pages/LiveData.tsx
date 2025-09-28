@@ -4,6 +4,7 @@ import { fetchLiveData } from '../api/api';
 import Gauge from '../components/Gauge';
 import { setLiveData } from '../app/LiveDataSlice';
 import { BATTERY_CURRENT, BATTERY_VOLTAGE, CHARGER_TEMP, PV_CURRENT, PV_POWER, PV_VOLTAGE } from '../types/segments';
+import { format } from 'date-fns';
 
 const LiveData: React.FC = () => {
   const dispatch = useDispatch();
@@ -34,7 +35,8 @@ const LiveData: React.FC = () => {
         <Gauge label="PV Power" min={0} max={1200} value={pvInfo.power} unit="W" segments={PV_POWER}/>
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
-        <span>{'Last update time: ' + batteryInfo.creationTime}</span>
+        <span>Last update time:</span>
+        <b>{format(batteryInfo.createdAt, 'yyyy-MM-dd HH:mm:ss')}</b>
       </div>
     </>
   );

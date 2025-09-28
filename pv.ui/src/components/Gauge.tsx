@@ -32,7 +32,7 @@ const Gauge: React.FC<GaugeProps> = ({ label, min, max, segments, value, unit })
     if (ref.current) {
       const svg = d3.select(ref.current);
       svg.selectAll('*').remove();
-
+      
       const width = 200;
       const height = 200;
       const radius = Math.min(width, height) / 2 - 20;
@@ -99,7 +99,8 @@ const Gauge: React.FC<GaugeProps> = ({ label, min, max, segments, value, unit })
         .attr('x', centerX)
         .attr('y', centerY + 10)
         .attr('text-anchor', 'middle')
-        .attr('font-size', '16px')
+        .attr('font-size', '20px')
+        .attr('style', 'text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;')
         .text(`${value.toFixed(2)} ${unit}`);
     }
   }, [value, min, max]);
