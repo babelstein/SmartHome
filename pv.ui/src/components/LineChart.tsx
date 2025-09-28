@@ -115,14 +115,14 @@ const LineChart: React.FC<LineChartProps> = ({
           .data(parsedData)
           .enter()
           .append('circle')
-          .attr('cx', (d: any) => xScale(d.timestamp))
+          .attr('cx', (d: any) => xScale(d.creationTime))
           .attr('cy', (d: any) => yScale(d[key] as number))
           .attr('r', 4)
           .attr('fill', key === yLeftKey ? 'steelblue' : 'orange')
           .on('mouseover', (event, d: any) => {
             tooltip.style('display', 'block')
               .html(`
-                <strong>${d.timestamp?.toISOString().slice(0,19).replace('T', ' ')}</strong><br/>
+                <strong>${d.creationTime?.toISOString().slice(0,19).replace('T', ' ')}</strong><br/>
                 ${yLeftLabel}: ${d[yLeftKey]}<br/>
                 ${yRightLabel}: ${d[yRightKey]}
               `);
